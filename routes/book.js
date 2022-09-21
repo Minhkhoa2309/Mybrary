@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Author = require("../models/author");
 const Book = require("../models/book");
-const imageMimeTypes = ['images/jpeg','images/png','images/gif']
+const imageMimeTypes = ['image/jpeg', 'image/png', 'images/gif']
 
 //All Book Routes
 router.get('/', async (req, res) => {
@@ -36,13 +36,12 @@ router.get("/new", async (req, res) => {
 router.post("/", async (req, res) => {
     const book = new Book({
         title: req.body.title,
-        author: req.body.author,
+        author: req.body.author.trim(),
         publishDate: new Date(req.body.publishDate),
         pageCount: req.body.pageCount,
         description: req.body.description
     })
     saveCover(book, req.body.cover)
-
     try {
         const newBook = await book.save()
         res.redirect(`books`)
